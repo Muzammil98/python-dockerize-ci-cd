@@ -7,6 +7,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: muzammil98/fastapi-app
+      USERNAME: muzammil98
     steps:
       - uses: actions/checkout@v3
 
@@ -14,6 +17,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+  
+#     - name: Lint code
+#        run: |
+#          pip install flake8
+#          flake8 .
 
       - name: Install dependencies
         run: |
@@ -26,26 +34,15 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t muzammil98/fastapi-app:latest -t muzammil98/fastapi-app:${{ steps.timestamp.outputs.TAG }} .
+          docker build -t ${{ env.IMAGE_NAME }}:latest -t ${{ env.IMAGE_NAME }}:${{ steps.timestamp.outputs.TAG }} .
 
-#      - name: Lint code
-#        run: |
-#          pip install flake8
-#          flake8 .
-#
-      - name: Build Docker Image
-        run: |
-          docker build -t muzammil98/fastapi-app:latest .
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
-          username: muzammil98
+          username: ${{ env.USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push to DockerHub
         run: |
-          docker push muzammil98/fastapi-app:latest
-          docker push muzammil98/fastapi-app:${{ steps.timestamp.outputs.TAG }}
-#      - name: Push to DockerHub
-#        run: |
-#          docker push muzammil98/fastapi-app:latest
+          docker push ${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.IMAGE_NAME }}:${{ steps.timestamp.outputs.TAG }}
