@@ -20,6 +20,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Generate timestamp tag
+        id: timestamp
+        run: echo "TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
+
+      - name: Build Docker Image
+        run: |
+          docker build -t muzammil98/fastapi-app:latest -t muzammil98/fastapi-app:${{ steps.timestamp.outputs.TAG }} .
+
 #      - name: Lint code
 #        run: |
 #          pip install flake8
@@ -37,3 +45,7 @@ jobs:
       - name: Push to DockerHub
         run: |
           docker push muzammil98/fastapi-app:latest
+          docker push muzammil98/fastapi-app:${{ steps.timestamp.outputs.TAG }}
+#      - name: Push to DockerHub
+#        run: |
+#          docker push muzammil98/fastapi-app:latest
