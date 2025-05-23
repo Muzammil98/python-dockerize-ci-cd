@@ -27,7 +27,7 @@ jobs:
 #
       - name: Build Docker Image
         run: |
-          docker build -t Muzammil98/fastapi-app:latest .
+          docker build -t muzammil98/fastapi-app:latest .
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
