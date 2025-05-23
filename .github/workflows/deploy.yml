@@ -36,4 +36,4 @@ jobs:
 
       - name: Push to DockerHub
         run: |
-          docker push Muzammil98/fastapi-app:latest
+          docker push muzammil98/fastapi-app:latest
